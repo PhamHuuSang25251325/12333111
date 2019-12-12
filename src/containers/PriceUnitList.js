@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Text, Alert, ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import withSpinner from '../utils/withSpinner';
@@ -12,23 +12,25 @@ const  ScrollViewWithSpinner = withSpinner(ScrollView);
 const PriceUnitList = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const list = useSelector(state => state.priceUnit.list);
-    const type= props.typePrice;
-    debugger
-    console.log(props.navigation.state.params);
-    
     const dispatch = useDispatch();
 
+    const loadPriceUnits = useCallback(async (type)=>{
+        try {
+            await dispatch (fetchPriceUnits(type,1))
+        } catch (error) {
+            
+        }
+    },[dispatch])
+
     useEffect(() => {
-        console.log(123);
-        
         setIsLoading(true);
-        priceUnitService.fetchPriceUnit(type).then(data => {
-            setIsLoading(false);
-            dispatch(fetchPriceUnits(data));
-        }).catch(err => {
-            Alert.alert(err.message)
+        loadPriceUnits('export').then(()=>{
+            setIsLoading(false)
         })
-    }, [type])
+    }, [loadPriceUnits])
+
+    console.log(isLoading);
+    
 
 
     return (

@@ -35,3 +35,13 @@ mutation priceUpdateById ($record: UpdateByIdPriceInput!) {
   }
 }
 `;
+
+
+export const priceRemoveById = gql`
+mutation priceRemoveById($id: MongoID!) {
+  priceRemoveById (_id: $id) {
+    recordId
+  }
+}
+`;
+

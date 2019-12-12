@@ -1,3 +1,6 @@
+
+
+import priceUnitService from './../services/priceUnit';
 // import client from '../lib/Client';
 // import { pricePagination, priceById } from '../actions/graphql/queries/PriceUnit';
 // import { priceUpdateById, priceCreateOne } from '../actions/graphql/mutations/PriceUnit';
@@ -29,7 +32,7 @@
 // 					console.error('Subscription callback with error: ', error);
 // 				},
 // 		}); */
-		
+
 // 	};
 // }
 
@@ -50,33 +53,111 @@
 //   });
 // }
 
+
+
 const PREFIX = 'PRICEUNIT_';
 
-export const fetchPriceUnits = (data)=>({
-	type : PREFIX + 'LIST',
-	payload : data
-})
-
-export const priceUnitObj = (data)=>({
-	type : PREFIX + 'OBJECT',
-	payload : data
-})
-
-export const updatePriceUnit = (data,id)=>({
-	type : PREFIX + 'UPDATE',
-	payload : {
-		data,
-		id
+export const fetchPriceUnits = (type, page = 1) => {
+	return dispatch => {
+		priceUnitService.fetchPriceUnit(type)
+			.then(data => {
+				dispatch({
+					type: PREFIX + 'LIST',
+					payload: data
+				})
+			})
 	}
-})
+}
 
-export const createPriceUnit = (data)=>({
-	type : PREFIX + 'CREATE',
-	payload : data
-})
+export const fetchPriceUnitById = (id) => {
+	return dispatch => {
+		priceUnitService.getById(id)
+			.then(data => {
+				dispatch({
+					type: PREFIX + 'OBJECT',
+					payload: data
+				})
+			})
+	}
+}
 
-export const deletePriceUnit = (data)=>({
-	type : PREFIX + 'DELETE',
-	payload : data
-})
+export const updatePriceUnit = (id, record) => {
+	return dispatch => {
+		priceUnitService.update(id, record)
+			.then(data => {
+				dispatch({
+					type: PREFIX + 'UPDATE',
+					payload: {
+						data,
+						id
+					}
+				})
+			})
+	}
+}
+
+export const createPriceUnit = (record) => {
+	return dispatch => {
+		priceUnitService.insert(record)
+			.then(data => {
+				dispatch({
+					type: PREFIX + 'CREATE',
+					payload: data
+				})
+			})
+	}
+}
+
+export const deletePriceUnit = (id) => {
+	return dispatch => {
+		priceUnitService.remove(id)
+			.then(data => {
+				dispatch({
+					type: PREFIX + 'DELETE',
+					payload: data
+				})
+			})
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+// export const fetchPriceUnits = (data)=>({
+// 	type : PREFIX + 'LIST',
+// 	payload : data
+// })
+
+// export const priceUnitObj = (data) => ({
+// 	type: PREFIX + 'OBJECT',
+// 	payload: data
+// })
+
+// export const updatePriceUnit = (data, id) => ({
+// 	type: PREFIX + 'UPDATE',
+// 	payload: {
+// 		data,
+// 		id
+// 	}
+// })
+
+// export const createPriceUnit = (data) => ({
+// 	type: PREFIX + 'CREATE',
+// 	payload: data
+// })
+
+// export const deletePriceUnit = (data) => ({
+// 	type: PREFIX + 'DELETE',
+// 	payload: data
+// })
+
+
+
 
